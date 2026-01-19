@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extravagante Pro | Luxury Perfumes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .sidebar {
+            background: #0a0a0a;
+        }
+
+        /* Contenedor relativo para la cinta de oferta */
+        .product-card {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Cinta Diagonal de Oferta */
+        .ribbon {
+            position: absolute;
+            top: 12px;
+            left: -35px;
+            background-color: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            width: 120px;
+            transform: rotate(-45deg);
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            padding: 2px 0;
+        }
+
+        /* Estándar visual para imágenes */
+        .product-image-container {
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            border-radius: 0.75rem;
+            position: relative;
+        }
+
+        .product-image-container img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            padding: 25px;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Carrito Lateral */
+        #cart-sidebar {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        #cart-sidebar.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 overflow-x-hidden">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <aside class="w-full md:w-64 sidebar text-white p-6 md:fixed md:h-full z-20">
+            <div class="mb-10 text-center md:text-left">
+                <h1 class="serif text-2xl tracking-widest text-orange-400">EXTRAVAGANTE</h1>
+                <p class="text-[10px] text-gray-500 uppercase tracking-tighter font-bold">Perfumería Exclusiva</p>
+            </div>
+
+            <nav class="space-y-4">
+                <p class="text-gray-500 uppercase text-[10px] font-bold tracking-[0.2em] mb-4">Explorar</p>
+                <button onclick="filtrarProductos('TODOS')"
+                    class="block text-gray-300 hover:text-white transition w-full text-left text-sm">Todos los
+                    Productos</button>
+                <button onclick="filtrarProductos('Mujer')"
+                    class="block text-gray-300 hover:text-white transition w-full text-left text-sm">Perfumes de
+                    Mujer</button>
+                <button onclick="filtrarProductos('Hombre')"
+                    class="block text-gray-300 hover:text-white transition w-full text-left text-sm">Perfumes de
+                    Hombre</button>
+                <button onclick="filtrarProductos('Arabes')"
+                    class="block text-gray-300 hover:text-white transition w-full text-left text-sm">Perfumes
+                    Árabes</button>
+                <button onclick="filtrarProductos('SI')"
+                    class="block text-orange-500 font-bold tracking-widest italic w-full text-left uppercase text-sm mt-6">¡OFERTAS!</button>
+            </nav>
+        </aside>
+
+        <div class="hidden md:block md:w-64"></div>
+
+        <main class="flex-1">
+            <header class="bg-white p-4 shadow-sm flex justify-between items-center px-8 sticky top-0 z-10">
+                <div class="hidden md:block">
+                    <input type="text" id="buscador" onkeyup="buscarProducto()" placeholder="Buscar fragancia..."
+                        class="bg-gray-100 border-none rounded-full px-4 py-2 text-sm w-64 focus:ring-2 focus:ring-orange-400 outline-none">
+                </div>
+                <div class="flex gap-6 items-center">
+                    <div class="relative cursor-pointer flex items-center gap-2 bg-black text-white px-5 py-2 rounded-full hover:bg-gray-800 transition"
+                        onclick="toggleCart()">
+                        <span class="text-xs font-bold uppercase tracking-widest">Carrito</span>
+                        <span id="cart-count"
+                            class="bg-orange-500 text-white rounded-full px-2 py-0.5 text-[10px]">0</span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="p-8">
+                <div class="relative h-64 rounded-3xl overflow-hidden bg-black flex items-center shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1583467875263-d50dec37a88c?auto=format&fit=crop&q=80&w=1000"
+                        class="absolute inset-0 w-full h-full object-cover opacity-50">
+                    <div class="relative z-10 p-12 text-white">
+                        <h2 class="serif text-4xl mb-2 italic">Colección Premium</h2>
+                        <p class="text-gray-200 mb-6 text-sm">Fragancias importadas con asesoría personalizada.</p>
+                        <a href="#productos-inicio"
+                            class="bg-white text-black px-6 py-3 font-bold rounded-lg hover:bg-orange-500 hover:text-white transition uppercase text-xs">Ver
+                            Catálogo</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="productos-inicio" class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div id="contenedor-productos" class="contents">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 p-6 flex flex-col">
+        <div class="flex justify-between items-center border-b pb-4 mb-4">
+            <h2 class="serif text-2xl">Tu Pedido</h2>
+            <button onclick="toggleCart()" class="text-2xl hover:text-orange-500">&times;</button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto space-y-4">
+        </div>
+        <div class="border-t pt-4 mt-4">
+            <div class="flex justify-between font-bold text-xl mb-6">
+                <span>Total:</span>
+                <span id="cart-total" class="text-orange-600">$0</span>
+            </div>
+            <button onclick="enviarWhatsApp()"
+                class="w-full bg-green-600 text-white py-4 rounded-xl font-bold hover:bg-green-700 transition flex justify-center items-center gap-2 shadow-lg">
+                Finalizar pedido por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1NFr-sfM4kG0NFPc6peUqKmnxuNcMHq28KcgFdlGT5xGNwBhhpslcwHoI8L2lH2hh7dvN9-dRfIrL/pub?output=csv";
+        let todosLosProductos = [];
+        let carrito = [];
+
+        async function cargarProductos() {
+            try {
+                const response = await fetch(sheetURL);
+                const data = await response.text();
+                const filas = data.split(/\r?\n/).filter(line => line.trim() !== "");
+
+                todosLosProductos = filas.slice(1).map(fila => {
+                    const columnas = fila.split(",");
+                    return {
+                        nombre: columnas[0]?.replace(/"/g, '').trim(),
+                        precio: parseInt(columnas[1]?.replace(/\D/g, '')) || 0,
+                        categoria: columnas[2]?.replace(/"/g, '').trim(),
+                        imagen: columnas[3]?.replace(/"/g, '').trim(),
+                        oferta: columnas[4]?.replace(/"/g, '').trim().toUpperCase() === "SI"
+                    };
+                }).filter(p => p.nombre);
+
+                renderizarProductos(todosLosProductos);
+            } catch (error) {
+                console.error("Error cargando inventario:", error);
+            }
+        }
+
+        function renderizarProductos(lista) {
+            const contenedor = document.getElementById("contenedor-productos");
+            if (lista.length === 0) {
+                contenedor.innerHTML = `<p class="col-span-full text-center py-10 text-gray-400 italic">No se encontraron fragancias.</p>`;
+                return;
+            }
+
+            contenedor.innerHTML = lista.map(p => `
+        <div class="product-card bg-white p-4 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all">
+            
+            <div class="product-image-container relative">
+                ${p.oferta ? '<div class="ribbon">¡Oferta!</div>' : ''}
+                <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/300?text=Perfume'">
+            </div>
+
+            <div class="mt-4 flex flex-col flex-1">
+                <h3 class="font-bold text-gray-800 text-base leading-none mb-0.5 overflow-hidden">${p.nombre}</h3>
+                <p class="text-gray-400 text-[10px] uppercase tracking-widest font-semibold mb-3">${p.categoria}</p>
+                
+                <div class="mt-auto pt-3 border-t border-gray-50 flex justify-between items-center">
+                    <span class="font-bold text-lg text-black">$${p.precio.toLocaleString('es-CO')}</span>
+                    <button onclick="agregarAlCarrito('${p.nombre}', ${p.precio})" 
+                            class="bg-black text-white px-4 py-2 rounded-lg text-[10px] font-bold hover:bg-orange-500 transition shadow-sm uppercase tracking-tighter">
+                        Agregar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+        }
+
+        function filtrarProductos(criterio) {
+            if (criterio === 'TODOS') {
+                renderizarProductos(todosLosProductos);
+            } else if (criterio === 'SI') {
+                renderizarProductos(todosLosProductos.filter(p => p.oferta));
+            } else {
+                renderizarProductos(todosLosProductos.filter(p => p.categoria.toLowerCase().includes(criterio.toLowerCase())));
+            }
+        }
+
+        function buscarProducto() {
+            const query = document.getElementById('buscador').value.toLowerCase();
+            const filtrados = todosLosProductos.filter(p => p.nombre.toLowerCase().includes(query));
+            renderizarProductos(filtrados);
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('open');
+        }
+
+        function agregarAlCarrito(nombre, precio) {
+            carrito.push({ nombre, precio });
+            actualizarCarritoUI();
+            if (!document.getElementById('cart-sidebar').classList.contains('open')) toggleCart();
+        }
+
+        function actualizarCarritoUI() {
+            const lista = document.getElementById('cart-items');
+            const totalElement = document.getElementById('cart-total');
+            document.getElementById('cart-count').innerText = carrito.length;
+
+            lista.innerHTML = carrito.map((item, index) => `
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <div>
+                        <p class="font-bold text-xs text-gray-800">${item.nombre}</p>
+                        <p class="text-orange-500 font-bold text-sm">$${item.precio.toLocaleString('es-CO')}</p>
+                    </div>
+                    <button onclick="eliminarDelCarrito(${index})" class="text-gray-300 hover:text-red-500 transition">✕</button>
+                </div>
+            `).join('');
+
+            const total = carrito.reduce((sum, item) => sum + item.precio, 0);
+            totalElement.innerText = `$${total.toLocaleString('es-CO')}`;
+        }
+
+        function eliminarDelCarrito(index) {
+            carrito.splice(index, 1);
+            actualizarCarritoUI();
+        }
+
+        function enviarWhatsApp() {
+            if (carrito.length === 0) return alert("Tu carrito está vacío");
+            let mensaje = "Hola EXTRAVAGANTE, me interesa este pedido:\n\n";
+            let total = 0;
+            carrito.forEach((p, i) => {
+                mensaje += `${i + 1}. *${p.nombre}* - $${p.precio.toLocaleString('es-CO')}\n`;
+                total += p.precio;
+            });
+            mensaje += `\n*TOTAL: $${total.toLocaleString('es-CO')}*`;
+            const telefono = "573000000000"; // PON TU NÚMERO AQUÍ
+            window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
+        }
+
+        window.addEventListener('DOMContentLoaded', cargarProductos);
+    </script>
+</body>
+
+</html>
