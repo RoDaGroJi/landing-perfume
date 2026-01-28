@@ -334,6 +334,11 @@ function toggleCart() {
     document.getElementById('cart-sidebar').classList.toggle('open');
 }
 
+// ===== SIDEBAR MOBILE =====
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('mobile-open');
+}
+
 // ===== WHATSAPP =====
 function enviarWhatsApp() {
     if (carrito.length === 0) {
@@ -428,5 +433,16 @@ function inicializarEventos() {
             !e.target.closest('.cart-button')) {
             toggleCart();
         }
+    });
+
+    // Cerrar sidebar mobile al hacer click en botón de navegación
+    const navButtons = document.querySelectorAll('nav button');
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const sidebar = document.querySelector('.sidebar');
+            if (window.innerWidth < 768 && sidebar.classList.contains('mobile-open')) {
+                sidebar.classList.remove('mobile-open');
+            }
+        });
     });
 }
