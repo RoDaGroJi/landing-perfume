@@ -1,5 +1,5 @@
 /**
- * SCRIPT OPTIMIZADO - Perfumería EXTRAVAGANTE
+ * SCRIPT OPTIMIZADO - Perfumería VELOURS
  * Incluye: mejor parsing CSV, validaciones, cache localStorage, y UX mejorada
  */
 
@@ -8,7 +8,7 @@ const CONFIG = {
     SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1NFr-sfM4kG0NFPc6peUqKmnxuNcMHq28KcgFdlGT5xGNwBhhpslcwHoI8L2lH2hh7dvN9-dRfIrL/pub?output=csv",
     CACHE_KEY: "perfumes_cache",
     CACHE_DURATION: 3600000, // 1 hora
-    WHATSAPP_NUMBER: "573000000000", // CAMBIAR POR TU NÚMERO
+    WHATSAPP_NUMBER: "573214132175", // CAMBIAR POR TU NÚMERO
     DEFAULT_IMAGE: "https://via.placeholder.com/300?text=Perfume"
 };
 
@@ -341,7 +341,7 @@ function enviarWhatsApp() {
         return;
     }
 
-    let mensaje = "Hola 👋 EXTRAVAGANTE, me interesa este pedido:\n\n";
+    let mensaje = "Hola 👋 Velours, me interesa este pedido:\n\n";
     let total = 0;
 
     carrito.forEach((item, i) => {
