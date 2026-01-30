@@ -7,7 +7,7 @@
 const CONFIG = {
     SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1NFr-sfM4kG0NFPc6peUqKmnxuNcMHq28KcgFdlGT5xGNwBhhpslcwHoI8L2lH2hh7dvN9-dRfIrL/pub?output=csv",
     CACHE_KEY: "perfumes_cache",
-    CACHE_DURATION: 3600000, // 1 hora
+    CACHE_DURATION: 600000, // 1 hora
     WHATSAPP_NUMBER: "573214132175", // CAMBIAR POR TU NÚMERO
     DEFAULT_IMAGE: "https://via.placeholder.com/300?text=Perfume"
 };
