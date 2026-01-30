@@ -29,19 +29,23 @@ async function cargarProductos() {
     try {
         // Intentar cargar desde cache primero
         const cached = obtenerCache();
-        if (cached) {
+
+        if (cached && cached.length > 0) {
+            console.log("⚡ Cargando desde cache");
             todosLosProductos = cached;
             renderizarProductos(todosLosProductos);
             return;
         }
 
+        console.log("🌐 Cargando desde Google Sheets...");
+
         // Si no hay cache, cargar desde sheet
         const response = await fetch(CONFIG.SHEET_URL);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
+
         const data = await response.text();
         todosLosProductos = parsearCSV(data);
-        
+
         // Guardar en cache
         guardarCache(todosLosProductos);
         renderizarProductos(todosLosProductos);
@@ -56,7 +60,7 @@ async function cargarProductos() {
  */
 function parsearCSV(data) {
     const filas = data.split(/\r?\n/).filter(line => line.trim() !== "");
-    
+
     if (filas.length < 2) {
         console.warn("⚠️ CSV vacío o sin encabezados");
         return [];
@@ -153,7 +157,7 @@ function obtenerCache() {
 // ===== RENDERIZADO DE PRODUCTOS =====
 function renderizarProductos(lista) {
     const contenedor = document.getElementById("contenedor-productos");
-    
+
     if (lista.length === 0) {
         contenedor.innerHTML = `
             <div class="empty-state">
@@ -229,7 +233,7 @@ function filtrarProductos(criterio) {
     } else if (criterio === 'SI') {
         filtrados = todosLosProductos.filter(p => p.oferta);
     } else {
-        filtrados = todosLosProductos.filter(p => 
+        filtrados = todosLosProductos.filter(p =>
             p.categoria.toLowerCase().includes(criterio.toLowerCase())
         );
     }
@@ -239,14 +243,14 @@ function filtrarProductos(criterio) {
 
 function buscarProducto() {
     const query = document.getElementById('buscador').value.toLowerCase().trim();
-    
+
     if (!query) {
         renderizarProductos(todosLosProductos);
         return;
     }
 
-    const filtrados = todosLosProductos.filter(p => 
-        p.nombre.toLowerCase().includes(query) || 
+    const filtrados = todosLosProductos.filter(p =>
+        p.nombre.toLowerCase().includes(query) ||
         p.categoria.toLowerCase().includes(query)
     );
 
@@ -258,7 +262,7 @@ function agregarAlCarrito(nombre, precio) {
     carrito.push({ nombre, precio, id: Date.now() });
     actualizarCarritoUI();
     guardarCarrito();
-    
+
     // Abrir carrito automáticamente
     if (!document.getElementById('cart-sidebar').classList.contains('open')) {
         toggleCart();
@@ -428,8 +432,8 @@ function inicializarEventos() {
     // Cerrar carrito si se hace click fuera
     document.addEventListener('click', (e) => {
         const cartSidebar = document.getElementById('cart-sidebar');
-        if (cartSidebar.classList.contains('open') && 
-            !cartSidebar.contains(e.target) && 
+        if (cartSidebar.classList.contains('open') &&
+            !cartSidebar.contains(e.target) &&
             !e.target.closest('.cart-button')) {
             toggleCart();
         }
